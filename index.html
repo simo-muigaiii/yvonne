@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Its Vee's Birthday</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  /* ── RESET & BASE ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold:       #D50032;
+    --gold-light: #FFC0CB;
+    --gold-deep:  #D50032;
+    --cream:      #FFFAFA;
+    --cream-dark: #FFFAFA;
+    --ink:        #2C2C2C;
+    --ink-soft:   #4A4A4A;
+    --white:      #FFFAFA;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--ink);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('');          /* ← DROP YOUR PHOTO URL HERE */
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.55) saturate(0.85);
+    transition: transform 0.6s ease;
+  }
+
+  /* placeholder gradient when no image is set */
+  .hero-bg:not([style*="url"]),
+  .hero-bg[style=""] {
+    background-image: linear-gradient(135deg,#2C2C2C 0%,#D50032 55%,#FFC0CB 100%);
+  }
+
+  /* ── HERO PLAY BUTTON ── */
+  .hero-play-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2.8rem;
+    background: rgba(213,0,50,0.12);
+    border: 1px solid rgba(195,167,123,0.5);
+    color: var(--gold-light);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 0.85rem 2rem 0.85rem 1.4rem;
+    border-radius: 100px;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: background 0.3s, border-color 0.3s, transform 0.2s;
+    text-decoration: none;
+  }
+  .hero-play-btn:hover {
+    background: rgba(195,167,123,0.28);
+    border-color: var(--gold);
+    transform: scale(1.04);
+  }
+  .hero-play-btn .play-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+  .hero-play-btn:hover .play-icon { background: var(--gold-light); }
+  .hero-play-btn .play-icon svg {
+    width: 12px;
+    height: 12px;
+    margin-left: 2px;
+    fill: var(--ink);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 2rem;
+    max-width: 780px;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 0.78rem;
+    letter-spacing: 0.35em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    margin-bottom: 1.6rem;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(3.2rem, 8vw, 6.5rem);
+    line-height: 1.05;
+    color: var(--white);
+    letter-spacing: -0.01em;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero-sub {
+    margin-top: 1.8rem;
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 1.05rem;
+    letter-spacing: 0.06em;
+    color: rgba(253,250,243,0.7);
+  }
+
+  .hero-line {
+    display: block;
+    width: 1px;
+    height: 80px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    margin: 3rem auto 0;
+  }
+
+  /* ── ABOUT SECTION ── */
+  .about {
+    padding: 6rem 2rem;
+    background: linear-gradient(180deg,#FFFAFA 0%,#FFE6EE 100%);
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+
+  .section-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 0.3rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    color: var(--ink);
+    line-height: 1.15;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--gold-deep);
+  }
+
+  /* ── CARDS CASCADE ── */
+  .cascade {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .cascade-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 0;
+    min-height: 480px;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+    border-bottom: 1px solid rgba(195,167,123,0.2);
+  }
+  .cascade-item:last-child { border-bottom: none; }
+  .cascade-item.visible { opacity: 1; transform: translateY(0); }
+
+  .cascade-item:nth-child(even) .cascade-img  { order: 2; }
+  .cascade-item:nth-child(even) .cascade-text { order: 1; }
+
+  .cascade-img {
+    position: relative;
+    height: 480px;
+    overflow: hidden;
+    background: var(--cream-dark);
+  }
+
+  .cascade-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+  .cascade-item:hover .cascade-img img { transform: scale(1.04); }
+
+  /* placeholder when no image */
+  .cascade-img .img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background: var(--cream-dark);
+    color: var(--gold-deep);
+    cursor: pointer;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .cascade-img .img-placeholder svg { width: 36px; height: 36px; opacity: 0.5; }
+  .cascade-img .img-placeholder:hover { background: #E8E3C8; }
+  .cascade-img input[type="file"] { display: none; }
+
+  .cascade-img .num-badge {
+    position: absolute;
+    bottom: 1.2rem;
+    left: 1.2rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem;
+    font-weight: 300;
+    color: rgba(195,167,123,0.22);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .cascade-text {
+    padding: 4rem 4.5rem;
+  }
+
+  .cascade-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+  }
+
+  .cascade-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 1.4rem;
+  }
+
+  .cascade-heading em { font-style: italic; color: var(--gold-deep); }
+
+  .cascade-body {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 0.97rem;
+    line-height: 1.85;
+    color: var(--ink-soft);
+    max-width: 400px;
+  }
+
+  .cascade-divider {
+    display: block;
+    width: 50px;
+    height: 1px;
+    background: var(--gold);
+    margin: 1.6rem 0;
+  }
+
+  /* ── SPOTIFY SECTION ── */
+  .spotify-section {
+    background: linear-gradient(135deg,#2C2C2C 0%,#3A2A32 55%,#D50032 100%);
+    padding: 7rem 2rem;
+    overflow: hidden;
+  }
+
+  .spotify-section .section-header .section-tag { color: var(--gold-light); }
+  .spotify-section .section-title { color: var(--white); }
+  .spotify-section .section-title em { color: var(--gold-light); }
+
+  /* 3D Carousel */
+  .carousel-scene {
+    perspective: 1400px;
+    height: 400px;
+    position: relative;
+    cursor: grab;
+    user-select: none;
+  }
+  .carousel-scene:active { cursor: grabbing; }
+
+  .carousel-track {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .carousel-card {
+    position: absolute;
+    width: 340px;
+    height: 170px;        /* 16:9 Spotify embed */
+    left: 50%;
+    top: 50%;
+    margin-left: -170px;
+    margin-top: -85px;
+    background: #1e1e1e;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    border: 1px solid rgba(195,167,123,0.15);
+    transition: box-shadow 0.4s, border-color 0.4s;
+  }
+
+  .carousel-card iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  /* empty slot placeholder */
+  .carousel-card .card-empty {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    color: rgba(195,167,123,0.35);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .carousel-card .card-empty svg { width: 32px; height: 32px; }
+
+  /* nav arrows */
+  .carousel-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+    margin-top: 2.8rem;
+  }
+
+  .carousel-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(195,167,123,0.35);
+    background: transparent;
+    color: var(--gold);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .carousel-btn:hover {
+    background: rgba(213,0,50,0.12);
+    border-color: var(--gold);
+  }
+  .carousel-btn svg { width: 20px; height: 20px; }
+
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.4rem;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(195,167,123,0.25);
+    transition: background 0.3s, transform 0.3s;
+    cursor: pointer;
+  }
+  .dot.active {
+    background: var(--gold);
+    transform: scale(1.4);
+  }
+
+  /* ── HIDDEN YOUTUBE PLAYER ── */
+  #yt-player {
+    position: fixed;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  /* ── NOW PLAYING BAR ── */
+  .now-playing {
+    position: fixed;
+    bottom: 1.8rem;
+    right: 1.8rem;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: rgba(44,44,44,0.9);
+    border: 1px solid rgba(195,167,123,0.35);
+    backdrop-filter: blur(14px);
+    border-radius: 100px;
+    padding: 0.55rem 1.2rem 0.55rem 0.55rem;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.4s, transform 0.4s;
+    pointer-events: none;
+  }
+  .now-playing.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .now-playing .np-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .now-playing .np-btn:hover { background: var(--gold-light); transform: scale(1.08); }
+  .now-playing .np-btn svg { width: 11px; height: 11px; fill: var(--ink); }
+  .now-playing .np-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    white-space: nowrap;
+  }
+  .now-playing .np-disc {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: pulse-disc 1.4s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  .now-playing.paused .np-disc { animation: none; background: rgba(195,167,123,0.4); }
+  @keyframes pulse-disc {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.6; }
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: linear-gradient(180deg,#FFC0CB,#FFFAFA);
+    padding: 2.5rem;
+    text-align: center;
+    border-top: 1px solid rgba(195,167,123,0.25);
+  }
+
+  footer p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--gold-deep);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .hero { min-height: 100svh; }
+    .hero-content { padding: 1.25rem; }
+    .hero-eyebrow { margin-bottom: 1rem; font-size: 0.66rem; letter-spacing: 0.24em; }
+    .hero-title { font-size: clamp(2.5rem, 10vw, 3.4rem); }
+    .hero-sub { margin-top: 1.25rem; font-size: 0.95rem; line-height: 1.7; }
+    .hero-play-btn { margin-top: 1.8rem; padding: 0.8rem 1.25rem; font-size: 0.7rem; }
+    .hero-line { height: 56px; margin-top: 2rem; }
+
+    .about { padding: 4.5rem 1rem 3.5rem; }
+    .section-header { margin-bottom: 3rem; }
+    .section-tag { font-size: 0.64rem; letter-spacing: 0.24em; }
+    .section-title { font-size: clamp(1.8rem, 6vw, 2.5rem); }
+
+    .cascade-item {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+    .cascade-item:nth-child(even) .cascade-img,
+    .cascade-item:nth-child(even) .cascade-text { order: unset; }
+    .cascade-img { height: 240px; }
+    .cascade-text { padding: 2rem 1.15rem 2.3rem; }
+    .cascade-heading { font-size: 1.45rem; }
+    .cascade-body { max-width: 100%; font-size: 0.94rem; }
+
+    .spotify-section { padding: 4.5rem 0.85rem 3.5rem; }
+    .carousel-scene { height: 280px; perspective: 1000px; }
+    .carousel-card { width: min(82vw, 300px); height: min(46vw, 160px); margin-left: calc(min(82vw, 300px) / -2); margin-top: calc(min(46vw, 160px) / -2); }
+    .carousel-nav { gap: 0.9rem; margin-top: 2rem; }
+    .carousel-btn { width: 44px; height: 44px; }
+    .carousel-dots { margin-top: 1.1rem; }
+
+    .now-playing { right: auto; left: 50%; bottom: 1rem; transform: translate(-50%, 12px); border-radius: 999px; padding: 0.55rem 0.95rem 0.55rem 0.55rem; }
+    .now-playing.visible { transform: translate(-50%, 0); }
+    footer { padding: 2rem 1rem; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-content { padding: 1rem 0.8rem; }
+    .hero-title { font-size: clamp(2.1rem, 9vw, 2.7rem); }
+    .hero-sub { font-size: 0.9rem; }
+    .cascade-text { padding: 1.7rem 1rem 2rem; }
+    .carousel-scene { height: 250px; }
+    .carousel-card { width: min(76vw, 250px); height: min(42vw, 135px); margin-left: calc(min(76vw, 250px) / -2); margin-top: calc(min(42vw, 135px) / -2); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cascade-item { opacity: 1; transform: none; transition: none; }
+    .carousel-track { transition: none; }
+  }
+
+#birthdaySplash{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;opacity:0;pointer-events:none;z-index:100000;transition:opacity 1s}
+#birthdaySplash.show{opacity:1}
+#birthdaySplash h1{font-family:'Cormorant Garamond',serif;font-size:clamp(4rem,10vw,9rem);color:#FFD700;text-align:center;letter-spacing:.15em;text-shadow:0 0 20px gold,0 0 60px #fff;animation:bp 2s infinite}
+#birthdaySplash p{font-size:2rem;color:#fff;letter-spacing:.25em;text-shadow:0 0 20px #fff}
+@keyframes bp{0%,100%{transform:scale(.95)}50%{transform:scale(1.08)}}
+
+</style>
+
+<style>
+#fireworks{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:99999}
+.hero{opacity:0;transition:opacity 1s ease}
+.hero.show{opacity:1}
+</style>
+
+</head>
+<body>
+
+<!-- Hidden YouTube background player -->
+<div id="yt-player"></div>
+
+
+<!-- ════════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section class="hero">
+  <!--
+    ╔══════════════════════════════════════════╗
+    ║  HERO BACKGROUND — set your image here  ║
+    ║  Replace the empty src below with your  ║
+    ║  image path or URL, e.g.:               ║
+    ║  background-image: url('photo.jpg');    ║
+    ╚══════════════════════════════════════════╝
+  -->
+  <div class="hero-bg" id="heroBg"></div>
+
+   <div class="hero-content">
+    <p class="hero-eyebrow">A Birthday Wish in pixels</p>
+    <h1 class="hero-title">Wishing you<br><em>♡ A Happy Birthday ♡</em></h1>
+    <p class="hero-sub">May your day be filled with all the love, laughter, and quiet joy you deserve. Cheers to another beautiful year of you, and to all the memories we have yet to make. Happy Birthday!</p>
+    
+    <a class="hero-play-btn" href="https://youtube.com/playlist?list=PLcQl3iPKRWEU&si=9XbettUO28cbfI_w" target="_blank" rel="noopener" id="heroPlayBtn">
+      <span class="play-icon" id="heroPlayIcon">
+        <svg viewBox="0 0 10 12" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 10,6 0,12"/></svg>
+      </span>
+      Birthday Music
+    </a>
+    <span class="hero-line"></span>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     THINGS I LIKE ABOUT YOU
+════════════════════════════════════════ -->
+<section class="about">
+  <div class="section-header">
+      <span class="section-tag">A few words for the birthday girl</span>
+    <h2 class="section-title">Things I <em>like like</em><br>about Vee</h2>
+  </div>
+
+  <div class="cascade">
+
+    <!-- CARD 1 -->
+    <div class="cascade-item">
+      <div class="cascade-img">
+        <img id="cascade-img-1" src="" alt="Memory 1" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <div class="img-placeholder" id="ph-1" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14"/></svg>
+          Set CASCADE_IMAGES[0] in code
+        </div>
+        <span class="num-badge">01</span>
+      </div>
+      <div class="cascade-text">
+        <p class="cascade-num">01 —</p>
+        <h3 class="cascade-heading">The way you <em>laugh</em></h3>
+        <span class="cascade-divider"></span>
+        <p class="cascade-body">There's nothing in this world quite like your laugh. Though quite hard to score, its that giggle that you let out that rings a bell in my mind. It is my favourite sound — unfiltered, unguarded, completely yours.</p>
+      </div>
+    </div>
+
+    <!-- CARD 2 -->
+    <div class="cascade-item">
+      <div class="cascade-img">
+        <img id="cascade-img-2" src="" alt="Memory 2" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <div class="img-placeholder" id="ph-2" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14"/></svg>
+          Set CASCADE_IMAGES[1] in code
+        </div>
+        <span class="num-badge">02</span>
+      </div>
+      <div class="cascade-text">
+        <p class="cascade-num">02 —</p>
+        <h3 class="cascade-heading">Your <em>kindness</em><br>without limit</h3>
+        <span class="cascade-divider"></span>
+        <p class="cascade-body">You see people. Truly see them. The smallest gesture you give to a stranger — a smile, a word, a moment of patience — reveals the enormous size of who you are inside. I am in awe of it daily. 'll never forget the day you nursed my wound it made me feel so cared for. The inspiring way you pour your whole heart into the things and people you love. May this year return to you all the kindness and generosity you so selflessly give to others.</p>
+      </div>
+    </div>
+
+    <!-- CARD 3 -->
+    <div class="cascade-item">
+      <div class="cascade-img">
+        <img id="cascade-img-3" src="" alt="Memory 3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <div class="img-placeholder" id="ph-3" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14"/></svg>
+          Set CASCADE_IMAGES[2] in code
+        </div>
+        <span class="num-badge">03</span>
+      </div>
+      <div class="cascade-text">
+        <p class="cascade-num">03 —</p>
+        <h3 class="cascade-heading">The <em>brightness</em><br>you bring</h3>
+        <span class="cascade-divider"></span>
+        <p class="cascade-body"> Spending the last few days with you has been a true blessing. i got to experience the joy and warmth you bring into my life. you brightened my day and made it all the more special. You are a rare and precious gift.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     SPOTIFY 3D CAROUSEL
+════════════════════════════════════════ -->
+<section class="spotify-section" id="spotify-section">
+  <div class="section-header">
+    <span class="section-tag">Songs that I dedicate to you</span>
+    <h2 class="section-title">Play one <em>at a time </em></h2>
+  </div>
+
+  <div class="carousel-scene" id="carouselScene">
+    <div class="carousel-track" id="carouselTrack">
+    </div>
+  </div>
+
+  <div class="carousel-nav">
+    <button class="carousel-btn" onclick="rotateCarousel(-1)" aria-label="Previous">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="carousel-btn" onclick="rotateCarousel(1)" aria-label="Next">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+  <div class="carousel-dots" id="carouselDots"></div>
+</section>
+
+<!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer>
+   <p>Thanks for choosing me!</p>
+  <p>Made with love — just for you. ♡</p>
+</footer>
+
+<script>
+// ════════════════════════════════════════════════════
+//  CONFIGURATION — only edit this section
+// ════════════════════════════════════════════════════
+
+// HERO BACKGROUND — paste image URL or relative path
+const HERO_IMAGE =
+'https://raw.githubusercontent.com/simo-muigaiii/VEEE/main/PHOTOS/VEE1.jpeg';
+
+const CASCADE_IMAGES = [
+'https://raw.githubusercontent.com/simo-muigaiii/VEEE/main/PHOTOS/VEE2.jpeg',
+'https://raw.githubusercontent.com/simo-muigaiii/VEEE/main/PHOTOS/VEE1.jpeg',
+'https://raw.githubusercontent.com/simo-muigaiii/VEEE/main/PHOTOS/VEE2.jpeg'
+];
+
+// BACKGROUND MUSIC — paste a YouTube video/song URL
+const YOUTUBE_MUSIC_URL = 'https://youtu.be/XTh2rsVuDWs?si=twGmxRsETzRs7cXt';
+// e.g. const YOUTUBE_MUSIC_URL = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+
+// SPOTIFY CAROUSEL — paste Spotify track/playlist URLs
+const SPOTIFY_LINKS = [
+ 'https://open.spotify.com/track/7AwIbRyv3M7MV5onFj1o8H?si=615e3701404e49c8',   // ← e.g. 'https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT'
+  'https://open.spotify.com/track/7yKzWjujvc2MnBhRyURV9p?si=38db96467e4e45fd',   // ← second song
+  'https://open.spotify.com/track/3gIz8WKZdtyzMndKU6ObSf?si=d30a034a7ccb4f10',   // ← third song
+];
+// ════════════════════════════════════════════════════
+//  APPLY CONFIG
+// ════════════════════════════════════════════════════
+(function applyConfig() {
+  // Hero image
+  if (HERO_IMAGE) {
+    document.getElementById('heroBg').style.backgroundImage = `url('${HERO_IMAGE}')`;
+  }
+
+  // Cascade images
+  CASCADE_IMAGES.forEach((url, i) => {
+    const img = document.getElementById(`cascade-img-${i + 1}`);
+    const ph  = document.getElementById(`ph-${i + 1}`);
+    if (img && url) {
+      img.src = url;
+      img.style.display = 'block';
+      if (ph) ph.style.display = 'none';
+    } else if (img) {
+      img.style.display = 'none';
+      if (ph) ph.style.display = 'flex';
+    }
+  });
+})();
+
+// ── SCROLL REVEAL ─────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting) { en.target.classList.add('visible'); observer.unobserve(en.target); }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.cascade-item').forEach(el => observer.observe(el));
+
+// ── YOUTUBE BACKGROUND MUSIC ──────────────
+let ytPlayer = null;
+let musicPlaying = false;
+
+function extractYTVideoId(url) {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    if (u.hostname.includes('youtu.be')) return u.pathname.slice(1).split('?')[0];
+    return u.searchParams.get('v') || null;
+  } catch { return null; }
+}
+
+// YouTube IFrame API — loaded on demand
+function loadYTApi() {
+  if (window.YT || document.getElementById('yt-api-script')) return;
+  const s = document.createElement('script');
+  s.id = 'yt-api-script';
+  s.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(s);
+}
+
+window.onYouTubeIframeAPIReady = function () {
+  const videoId = extractYTVideoId(YOUTUBE_MUSIC_URL);
+  if (!videoId) return;
+  ytPlayer = new YT.Player('yt-player', {
+    videoId,
+    playerVars: { autoplay: 1, loop: 1, playlist: videoId, controls: 0, disablekb: 1 },
+    events: {
+      onReady(e) {
+        e.target.setVolume(70);
+        e.target.playVideo();
+        musicPlaying = true;
+        showNowPlaying();
+      }
+    }
+  });
+};
+
+function startMusic() {
+  if (!YOUTUBE_MUSIC_URL) return;
+  if (ytPlayer) {
+    // already initialised — just toggle
+    toggleMusic();
+    return;
+  }
+  loadYTApi();
+  // pulse the button while loading
+  document.getElementById('heroPlayBtn').style.opacity = '0.6';
+  setTimeout(() => { document.getElementById('heroPlayBtn').style.opacity = ''; }, 2000);
+}
+
+function toggleMusic() {
+  if (!ytPlayer) return;
+  if (musicPlaying) {
+    ytPlayer.pauseVideo();
+    musicPlaying = false;
+    setNowPlayingPaused(true);
+  } else {
+    ytPlayer.playVideo();
+    musicPlaying = true;
+    setNowPlayingPaused(false);
+  }
+}
+
+const PAUSE_SVG = '<rect x="0" y="0" width="3" height="12"/><rect x="6" y="0" width="3" height="12"/>';
+const PLAY_SVG  = '<polygon points="0,0 10,6 0,12"/>';
+
+function showNowPlaying() {
+  document.getElementById('nowPlaying').classList.add('visible');
+}
+
+function setNowPlayingPaused(paused) {
+  const bar  = document.getElementById('nowPlaying');
+  const icon = document.getElementById('npIcon');
+  bar.classList.toggle('paused', paused);
+  icon.innerHTML = paused ? PLAY_SVG : PAUSE_SVG;
+}
+
+// ── CAROUSEL ─────────────────────────────
+let current = 0;
+let dragStartX = 0;
+let isDragging = false;
+let carouselCardWidth = 340;
+let carouselCardHeight = 170;
+
+function buildEmbedUrl(raw) {
+  if (!raw || !raw.trim()) return null;
+  try {
+    const url = new URL(raw.trim());
+    if (url.hostname.includes('spotify.com')) {
+      const parts = url.pathname.split('/').filter(Boolean);
+      if (parts.length >= 2) {
+        return `https://open.spotify.com/embed/${parts[0]}/${parts[1]}?utm_source=generator&theme=0`;
+      }
+    }
+  } catch {}
+  return null;
+}
+
+const cards = SPOTIFY_LINKS.map(buildEmbedUrl);
+while (cards.length < 3) cards.push(null);
+
+function renderCarousel() {
+  const track = document.getElementById('carouselTrack');
+  const dotsEl = document.getElementById('carouselDots');
+  const n = cards.length;
+  const isMobile = window.innerWidth <= 768;
+  carouselCardWidth = isMobile ? Math.min(window.innerWidth * 0.82, 300) : 340;
+  carouselCardHeight = isMobile ? Math.min(carouselCardWidth * 0.5, 160) : 170;
+  const angle = 360 / n;
+  const r = Math.max(Math.round(carouselCardWidth / (2 * Math.tan(Math.PI / n))), isMobile ? 220 : 300);
+
+  track.innerHTML = '';
+  dotsEl.innerHTML = '';
+
+  cards.forEach((embedUrl, i) => {
+    const card = document.createElement('div');
+    card.className = 'carousel-card';
+    const theta = angle * i;
+    const isFront = i === current % n;
+    card.style.width = `${carouselCardWidth}px`;
+    card.style.height = `${carouselCardHeight}px`;
+    card.style.marginLeft = `${-carouselCardWidth / 2}px`;
+    card.style.marginTop = `${-carouselCardHeight / 2}px`;
+    card.style.transform = `rotateY(${theta}deg) translateZ(${r}px)`;
+    card.style.boxShadow = isFront
+      ? '0 40px 100px rgba(0,0,0,0.8), 0 0 0 1px rgba(195,167,123,0.45)'
+      : '0 20px 60px rgba(0,0,0,0.5)';
+    card.style.borderColor = isFront ? 'rgba(195,167,123,0.5)' : 'rgba(195,167,123,0.1)';
+
+    if (embedUrl) {
+      const iframe = document.createElement('iframe');
+      iframe.src = embedUrl;
+      iframe.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+      iframe.loading = 'lazy';
+      card.appendChild(iframe);
+    } else {
+      card.innerHTML = `<div class="card-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <circle cx="12" cy="12" r="10"/><path d="M9.5 8.5l5 3.5-5 3.5V8.5z"/>
+        </svg>
+        Add a Spotify link in the code
+      </div>`;
+    }
+
+    track.appendChild(card);
+
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === ((current % n + n) % n) ? ' active' : '');
+    dot.onclick = () => { current = i; applyRotation(); };
+    dotsEl.appendChild(dot);
+  });
+
+  applyRotation();
+}
+
+function applyRotation() {
+  const n = cards.length;
+  const angle = 360 / n;
+  const isMobile = window.innerWidth <= 768;
+  const r = Math.max(Math.round(carouselCardWidth / (2 * Math.tan(Math.PI / n))), isMobile ? 220 : 300);
+  const track = document.getElementById('carouselTrack');
+  track.style.transform = `rotateY(${-current * angle}deg)`;
+
+  track.querySelectorAll('.carousel-card').forEach((card, i) => {
+    const isFront = i === ((current % n + n) % n);
+    card.style.boxShadow = isFront
+      ? '0 40px 100px rgba(0,0,0,0.8), 0 0 0 1px rgba(195,167,123,0.45)'
+      : '0 20px 60px rgba(0,0,0,0.5)';
+    card.style.borderColor = isFront ? 'rgba(195,167,123,0.5)' : 'rgba(195,167,123,0.1)';
+  });
+
+  document.querySelectorAll('.dot').forEach((d, i) => {
+    d.classList.toggle('active', i === ((current % n + n) % n));
+  });
+}
+
+function rotateCarousel(dir) {
+  current = ((current + dir) % cards.length + cards.length) % cards.length;
+  applyRotation();
+}
+
+const scene = document.getElementById('carouselScene');
+scene.addEventListener('mousedown', e => { isDragging = true; dragStartX = e.clientX; });
+window.addEventListener('mouseup', e => {
+  if (!isDragging) return;
+  isDragging = false;
+  const dx = e.clientX - dragStartX;
+  if (Math.abs(dx) > 40) rotateCarousel(dx < 0 ? 1 : -1);
+});
+scene.addEventListener('touchstart', e => { dragStartX = e.touches[0].clientX; }, { passive: true });
+scene.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - dragStartX;
+  if (Math.abs(dx) > 40) rotateCarousel(dx < 0 ? 1 : -1);
+});
+window.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') rotateCarousel(-1);
+  if (e.key === 'ArrowRight') rotateCarousel(1);
+});
+window.addEventListener('resize', renderCarousel);
+
+renderCarousel();
+</script>
+<canvas id="fireworks"></canvas>
+
+<div id="birthdaySplash">
+<h1 style="color: #120f0c">HAPPY<br>BIRTHDAY</h1>
+<p style="color: #120f0c">♡ Victorious ♡</p>
+</div>
+
+
+<script>
+window.addEventListener("load",()=>{
+const splash=document.getElementById("birthdaySplash");
+setTimeout(()=>splash.classList.add("show"),300);
+ const c=document.getElementById("fireworks"),x=c.getContext("2d");
+ c.width=innerWidth;c.height=innerHeight;
+ document.querySelector(".hero").classList.remove("show");
+ let p=[];class P{constructor(X,Y,C){this.x=X;this.y=Y;this.a=Math.random()*6.28;this.s=2+Math.random()*6;this.l=100;this.c=C;this.r=1+Math.random()*3}
+ u(){this.x+=Math.cos(this.a)*this.s;this.y+=Math.sin(this.a)*this.s;this.s*=.97;this.y+=.15;this.l--}
+ d(){x.globalAlpha=this.l/100;x.beginPath();x.arc(this.x,this.y,this.r,0,6.28);x.fillStyle=this.c;x.fill();}}
+ function boom(){let cs=["#FFD700","#fff","#ff7aa2","#ffe082"];let X=Math.random()*c.width,Y=50+Math.random()*c.height*.6;for(let i=0;i<120;i++)p.push(new P(X,Y,cs[Math.floor(Math.random()*cs.length)]));}
+ function anim(){x.clearRect(0,0,c.width,c.height);p=p.filter(o=>o.l>0);p.forEach(o=>{o.u();o.d()});requestAnimationFrame(anim)}anim();
+ let iv=setInterval(boom,350);
+ setTimeout(()=>{clearInterval(iv);splash.style.opacity="0";setTimeout(()=>{splash.remove();c.remove();document.querySelector(".hero").classList.add("show");},1000);},3000);
+});
+</script>
+</body>
+</html>
